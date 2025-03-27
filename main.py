@@ -14,6 +14,10 @@ from streamlit_folium import folium_static
 import pandas as pd
 import geopandas as gpd
 import io
+import google.generativeai
+
+
+
 
 # conda wen_streamlit_env - no map
 # conda env map_wen_strmlit - with map
@@ -36,10 +40,12 @@ class StreamLitResponse(ResponseParser):
                st.write(result['value'])
                return
 
-gemini_api_key = os.environ['gemini']
+
+
+gemini_api_key = "AIzaSyCQNr5hHK--o0YyyVy_2yFM5yWn5WOZNIg"   #os.environ['gemini'] current key is hardcoded
 
 def generateResponse(dataFrame,prompt):
-        llm = GoogleGemini(api_key=gemini_api_key)
+        llm = GoogleGemini(api_key=gemini_api_key, model_name="models/gemini-1.5-pro") # included model name to the latest up to date model
         pandas_agent = SmartDataframe(dataFrame,config={"llm":llm, "response_parser":StreamLitResponse, "custom_whitelisted_dependencies":["geopandas"]})
         answer = pandas_agent.chat(prompt)
         return answer
